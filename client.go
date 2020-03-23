@@ -21,6 +21,20 @@ import (
 	"net/url"
 )
 
+const (
+	// Version default CDMI version used
+	Version = "1.1.1"
+
+	// VersionHeader CDMI version header key
+	VersionHeader = "X-CDMI-Specification-Version"
+
+	// ObjectHeader HTTP header for CDMI objects
+	ObjectHeader = "application/cdmi-object"
+
+	// ContainerHeader HTTP header for CDMI containers
+	ContainerHeader = "application/cdmi-container"
+)
+
 // Client represents a CDMI client
 type Client struct {
 	Endpoint   url.URL

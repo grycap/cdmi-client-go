@@ -13,3 +13,30 @@
 // limitations under the License.
 
 package cdmi
+
+import "errors"
+
+var (
+	errBadRequest    = errors.New("The request contains invalid parameters or field names")
+	errUnauthorized  = errors.New("The authentication credentials are missing or invalid")
+	errForbidden     = errors.New("The client lacks the proper authorization to perform this request")
+	errNotFound      = errors.New("The resource was not found at the specified URI")
+	errNotAcceptable = errors.New("The server is unable to provide the object in the content type specified in the Accept header")
+)
+
+func errorFromCode(errorCode int) error {
+	switch errorCode {
+	case 400:
+		return errBadRequest
+	case 401:
+		return errUnauthorized
+	case 403:
+		return errForbidden
+	case 404:
+		return errNotFound
+	case 406:
+		return errNotAcceptable
+	}
+
+	return nil
+}

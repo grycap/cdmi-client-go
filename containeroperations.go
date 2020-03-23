@@ -13,3 +13,43 @@
 // limitations under the License.
 
 package cdmi
+
+import (
+	"encoding/json"
+	"net/http"
+	"path"
+)
+
+type readContainerResponse struct {
+	Children []string `json:"children"`
+}
+
+// CreateContainer creates a new container
+func (c Client) CreateContainer(containerPath string, recursive bool) error {
+	// TODO
+	return nil
+}
+
+// ReadContainer checks if a container exists and returns a slice with its children
+func (c Client) ReadContainer(containerPath string) ([]string, error) {
+	c.Endpoint.Path = path.Join(c.Endpoint.Path, containerPath)
+
+	req, _ := http.NewRequest("GET", c.Endpoint.String(), nil)
+	req.Header.Add(VersionHeader, Version)
+
+	res, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if statusErr := errorFromCode(res.StatusCode); statusErr != nil {
+		return nil, statusErr
+	}
+
+	readContainerResponse := &readContainerResponse{}
+
+	json.NewDecoder(res.Body).Decode(readContainerResponse)
+
+	return readContainerResponse.Children, nil
+}
