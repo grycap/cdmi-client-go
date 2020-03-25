@@ -37,12 +37,12 @@ const (
 
 // Client represents a CDMI client
 type Client struct {
-	Endpoint   url.URL
+	Endpoint   *url.URL
 	HTTPClient *http.Client
 }
 
 // New creates a new CDMI client
-func New(endpoint url.URL, token string, verify bool) *Client {
+func New(endpoint *url.URL, token string, verify bool) *Client {
 
 	var transport http.RoundTripper
 	transport = &http.Transport{

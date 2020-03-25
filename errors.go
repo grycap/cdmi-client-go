@@ -17,25 +17,44 @@ package cdmi
 import "errors"
 
 var (
-	errBadRequest    = errors.New("The request contains invalid parameters or field names")
-	errUnauthorized  = errors.New("The authentication credentials are missing or invalid")
-	errForbidden     = errors.New("The client lacks the proper authorization to perform this request")
-	errNotFound      = errors.New("The resource was not found at the specified URI")
-	errNotAcceptable = errors.New("The server is unable to provide the object in the content type specified in the Accept header")
+	// ErrBadRequest error thrown when request contains invalid parameters or field names (HTTP status code 400)
+	ErrBadRequest = errors.New("The request contains invalid parameters or field names")
+
+	// ErrUnauthorized error thrown when authentication credentials are missing or invalid (HTTP status code 401)
+	ErrUnauthorized = errors.New("The authentication credentials are missing or invalid")
+
+	// ErrForbidden error thrown when client lacks the proper authorization to perform this request (HTTP status code 403)
+	ErrForbidden = errors.New("The client lacks the proper authorization to perform this request")
+
+	// ErrNotFound error thrown when resource was not found at the specified URI (HTTP status code 404)
+	ErrNotFound = errors.New("The resource was not found at the specified URI")
+
+	// ErrNotAcceptable error thrown when server is unable to provide the object in the content type specified in the Accept header (HTTP status code 406)
+	ErrNotAcceptable = errors.New("The server is unable to provide the object in the content type specified in the Accept header")
+
+	// ErrConflict error thrown when operation conflicts with a non-CDMI access protocol lock or has caused a state transition error on the server (HTTP status code 409)
+	ErrConflict = errors.New("The operation conflicts with a non-CDMI access protocol lock or has caused a state transition error on the server")
+
+	// ErrInternalServer error thrown when server fails (HTTP status code 500)
+	ErrInternalServer = errors.New("Internal server error")
 )
 
 func errorFromCode(errorCode int) error {
 	switch errorCode {
 	case 400:
-		return errBadRequest
+		return ErrBadRequest
 	case 401:
-		return errUnauthorized
+		return ErrUnauthorized
 	case 403:
-		return errForbidden
+		return ErrForbidden
 	case 404:
-		return errNotFound
+		return ErrNotFound
 	case 406:
-		return errNotAcceptable
+		return ErrNotAcceptable
+	case 409:
+		return ErrConflict
+	case 500:
+		return ErrInternalServer
 	}
 
 	return nil
