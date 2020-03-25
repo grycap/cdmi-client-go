@@ -24,20 +24,22 @@ import (
 )
 
 type readContainerResponse struct {
+	// Only store the children array from response JSON
 	Children []string `json:"children"`
 }
 
-// CreateContainer creates a new container
-func (c *Client) CreateContainer(containerPath string, recursive bool) error {
+// CreateContainer creates a new container on the specified path.
+// If parents is set to true, it creates the required parent directories.
+func (c *Client) CreateContainer(containerPath string, parents bool) error {
 	containerPath = strings.Trim(containerPath, " /")
 	endpoint, _ := url.Parse(c.Endpoint.String())
 
 	endpoint.Path = fmt.Sprintf("%s/", path.Join(endpoint.Path, containerPath))
 
-	if recursive {
+	if parents {
 		// Check if parent folder exists
 		if _, err := c.ReadContainer(path.Dir(containerPath)); err != nil {
-			err = c.CreateContainer(path.Dir(containerPath), recursive)
+			err = c.CreateContainer(path.Dir(containerPath), parents)
 			if err != nil {
 				return err
 			}
@@ -61,7 +63,7 @@ func (c *Client) CreateContainer(containerPath string, recursive bool) error {
 	return nil
 }
 
-// ReadContainer checks if a container exists and returns a slice with its children
+// ReadContainer returns a slice with children (containers and objects) of the specified container.
 func (c *Client) ReadContainer(containerPath string) ([]string, error) {
 	endpoint, _ := url.Parse(c.Endpoint.String())
 	endpoint.Path = path.Join(endpoint.Path, containerPath)
@@ -89,7 +91,7 @@ func (c *Client) ReadContainer(containerPath string) ([]string, error) {
 	return readContainerResponse.Children, nil
 }
 
-// DeleteContainer deletes a container with its children
+// DeleteContainer deletes a container including all its children.
 func (c *Client) DeleteContainer(containerPath string) error {
 	endpoint, _ := url.Parse(c.Endpoint.String())
 	endpoint.Path = path.Join(endpoint.Path, containerPath)

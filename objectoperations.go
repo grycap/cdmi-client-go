@@ -23,7 +23,8 @@ import (
 	"strings"
 )
 
-// CreateObject creates a new object with the content of ...
+// CreateObject creates a new object with the io.Reader data in the specified path.
+// If createContainer is set to true it creates all required parent directories.
 func (c *Client) CreateObject(objectPath string, data io.Reader, createContainer bool) error {
 	objectPath = strings.Trim(objectPath, " /")
 	endpoint, _ := url.Parse(c.Endpoint.String())
@@ -57,7 +58,7 @@ func (c *Client) CreateObject(objectPath string, data io.Reader, createContainer
 	return nil
 }
 
-// DeleteObject deletes an object
+// DeleteObject deletes the specified object.
 func (c *Client) DeleteObject(objectPath string) error {
 	endpoint, _ := url.Parse(c.Endpoint.String())
 	endpoint.Path = path.Join(endpoint.Path, objectPath)
@@ -79,7 +80,7 @@ func (c *Client) DeleteObject(objectPath string) error {
 	return nil
 }
 
-// GetObject downloads an object
+// GetObject GetObject returns an io.ReadCloser with the content of the specified object.
 func (c *Client) GetObject(objectPath string) (io.ReadCloser, error) {
 	endpoint, _ := url.Parse(c.Endpoint.String())
 	endpoint.Path = path.Join(endpoint.Path, objectPath)

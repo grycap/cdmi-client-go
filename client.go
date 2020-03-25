@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package cdmi provides a client to perform the core container and object operations defined in the Cloud Data Management Interface specification.
 package cdmi
 
 import (
@@ -22,26 +23,26 @@ import (
 )
 
 const (
-	// Version default CDMI version used
+	// Version default CDMI version used.
 	Version = "1.1.1"
 
-	// VersionHeader CDMI version header key
+	// VersionHeader CDMI version header key.
 	VersionHeader = "X-CDMI-Specification-Version"
 
-	// ObjectHeader HTTP header for CDMI objects
+	// ObjectHeader HTTP header for CDMI objects.
 	ObjectHeader = "application/cdmi-object"
 
-	// ContainerHeader HTTP header for CDMI containers
+	// ContainerHeader HTTP header for CDMI containers.
 	ContainerHeader = "application/cdmi-container"
 )
 
-// Client represents a CDMI client
+// Client represents a CDMI client.
 type Client struct {
 	Endpoint   *url.URL
 	HTTPClient *http.Client
 }
 
-// New creates a new CDMI client
+// New creates a new CDMI client. If the CDMI server doesn't implement auth, token must be an empty string.
 func New(endpoint *url.URL, token string, verify bool) *Client {
 
 	var transport http.RoundTripper
@@ -62,13 +63,13 @@ func New(endpoint *url.URL, token string, verify bool) *Client {
 	}
 }
 
-// Struct to decorate a transport with a token
+// Struct to decorate a transport with a token.
 type customTransport struct {
 	transport http.RoundTripper
 	token     string
 }
 
-// RoundTrip function to implement the RoundTripper interface adding the token to request's headers
+// RoundTrip function to implement the RoundTripper interface adding the token to request's headers.
 func (ct *customTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", ct.token))
 	return ct.transport.RoundTrip(req)
