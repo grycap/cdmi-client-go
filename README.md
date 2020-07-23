@@ -1,6 +1,8 @@
 # cdmi-client-go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/grycap/cdmi-client-go)](https://goreportcard.com/report/github.com/grycap/cdmi-client-go)
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/grycap/cdmi-client-go)
+[![GitHub](https://img.shields.io/github/license/grycap/cdmi-client-go)](https://github.com/grycap/cdmi-client-go/blob/master/LICENSE)
 
 A basic Go library to perform the core container and object operations defined in the Cloud Data Management Interface (CDMI) [specification](https://www.snia.org/sites/default/files/CDMI_Spec_v1.1.1.pdf).
 
