@@ -39,8 +39,12 @@ func (c *Client) CreateContainer(containerPath string, parents bool) error {
 	if parents {
 		// Check if parent folder exists
 		if _, err := c.ReadContainer(path.Dir(containerPath)); err != nil {
-			err = c.CreateContainer(path.Dir(containerPath), parents)
-			if err != nil {
+			if err == ErrNotFound {
+				createErr := c.CreateContainer(path.Dir(containerPath), parents)
+				if createErr != nil {
+					return createErr
+				}
+			} else {
 				return err
 			}
 		}
